@@ -5,15 +5,33 @@ var game = new Game(width, height);
 
 var asset_config = {
     base: '../assets/',
-    paths:[]
+    paths:[
+        "json/flame.json",
+    ]
 };
 
 game.assets = new AssetManager(asset_config);
-game.assets.downloadAll(loop);
+game.assets.downloadAll(init);
 
-game.pushState(new state_Game(game));
+function init() {
+    game.pushState(new state_Game(game));
+    loop();
+}
+
+
+var now = null;
+var delta = 0;
+var last = Tools.timestamp();
+var fps = 60;
+var step = 1/fps;
 
 function loop() {
-    game.gameLoop();
-    requestAnimationFrame(loop);
+    now = Tools.timestamp();
+    delta = delta + Math.min(1, (now - last) / 1000);
+    while (delta > step) {
+        delta = delta - step;
+        game.gameLoop(step);
+    }
+    last = now;
+    requestAnimationFrame(loop, canvas);
 }
