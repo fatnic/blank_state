@@ -16,6 +16,7 @@ function state_Game(game) {
 
     this.draw = function() {
         Draw.clear(game.ctx, 'rgb(51,51,51)');
+        Draw.line(game.ctx, new Vec2(0, game.canvas.height - 100), new Vec2(game.canvas.width, game.canvas.height - 100));
         player.draw(game.ctx);
     };
 
